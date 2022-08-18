@@ -7,21 +7,29 @@ dotenv.config();
 const MongoClient = mongodb.MongoClient;
 const port = process.env.PORT || 8000;
 
-const uri =process.env.RESREV_DB_URI;
+const uri = process.env.RESREV_DB_URI;
+
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// FIXME:Code refactoring
 client.connect((err, data) => {
   if (err) {
-    console.log(err);
+    logMessage(err);
   } else {
-    console.log('Connected to database');
-    app.listen(port, () => {
-      console.log(`Listening on port ${port}`);
-    });
+    logMessage('Connected to database');
+    runServer();
   }
   client.close();
 });
+
+const runServer = () => {
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+  });
+};
+
+const logMessage = (message) => {
+  console.log(message);
+};
